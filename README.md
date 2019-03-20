@@ -79,3 +79,11 @@ you can set a crontab or a "at" service to trigger the command at the given time
 ```python
 python jong_toolkit/collector.py 
 ```
+
+the note with the shared link
+
+![before](before.png)
+
+once the script has run
+
+![after](after.png)
