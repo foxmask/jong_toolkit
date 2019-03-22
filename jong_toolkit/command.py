@@ -12,6 +12,14 @@ cwd = Path.cwd()
 config = configparser.ConfigParser()
 config.read(str(cwd) + '/jong_toolkit/settings.ini')
 
+if not config['JOPLIN_CONFIG']['JOPLIN_BIN_PATH']:
+    raise ValueError('please, set the JOPLIN_BIN_PATH in the settings.ini file')
+if not config['JOPLIN_CONFIG']['JOPLIN_PROFILE_PATH']:
+    raise ValueError('please, set the JOPLIN_PROFILE_PATH in the settings.ini file')
+if not config['JOPLIN_CONFIG']['JOPLIN_DEFAULT_FOLDER']:
+    raise ValueError('please, set the JOPLIN_DEFAULT_FOLDER in the settings.ini file')
+
+
 class JongToolKitCommand:
 
     def _command(self, file):

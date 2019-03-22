@@ -3,7 +3,7 @@
 import configparser
 from pathlib import Path
 import itertools
-
+# jong_toolkit class
 from command import JongToolKitCommand
 
 """
@@ -14,15 +14,12 @@ from command import JongToolKitCommand
 
     example: 
 
-    >>> from jong_toolkit.go import go
-    >>> go()
-    
-    or  
-
+    >>> from jong_toolkit.importer import JongToolKitImporter
     >>> from jong_toolkit.go import JongToolKitImporter
     >>> file = '/somewhere/Dropbox/Applications/Joplin/letterbox/foorbar.md'
     >>> jtki = JongToolKitImporter()
     >>> jtki.import_note(file)
+    >>> jtki.import_note()   # will grab the file in the path set in settings.ini containing .jex or .md 
 
 """
 cwd = Path.cwd()
@@ -48,6 +45,8 @@ def go():
     """
     read the folder of the file to import
     """
+    if not config['JOPLIN_CONFIG']['JOPLIN_IMPORT_FOLDER']:
+        raise ValueError('please, set the JOPLIN_IMPORT_FOLDER in the settings.ini file')
 
     jtki = JongToolKitImporter()
     md_files = Path(config['JOPLIN_CONFIG']['JOPLIN_IMPORT_FOLDER']).glob('*.md')
