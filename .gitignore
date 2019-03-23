@@ -105,3 +105,4 @@ venv.bak/
 
 # env
 .env
+settings.ini
