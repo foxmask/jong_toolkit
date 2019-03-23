@@ -30,7 +30,10 @@ source bin/activate
 git clone https://github.com/foxmask/jong_toolkit
 pip install -r requirements.txt
 cd jong_toolkit
+cp settings.sample settings.ini
 ```
+
+set the value of JOPLIN_WEBCLIPPER_TOKEN 
 
 ### settings 
 
