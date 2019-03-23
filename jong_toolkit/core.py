@@ -66,7 +66,7 @@ class JongToolKitCollector:
                 for note in self.get_tags_notes(tag['id']).json():
                     title, body = self.grab_note(note)
                     params = {'source_url': note['body']}
-                    content = pypandoc.convert(body.decode(), config['JOPLIN_CONFIG']['PYPANDOC_MARKDOWN'], format='html')
+                    content = pypandoc.convert_text(body.decode(), config['JOPLIN_CONFIG']['PYPANDOC_MARKDOWN'], format='html')
                     joplin.create_note(title, content, note['parent_id'], **params)
 
 
