@@ -16,6 +16,8 @@ import pypandoc
 current_folder = os.path.dirname(__file__)
 config = configparser.ConfigParser()
 config.read(os.path.join(current_folder, 'settings.ini'))
+if not config['JOPLIN_CONFIG']['JOPLIN_WEBCLIPPER_TOKEN']:
+    raise ValueError('Token not provided, edit the settings.ini and set JOPLIN_WEBCLIPPER_TOKEN accordingly')
 
 joplin = JoplinApi(token=config['JOPLIN_CONFIG']['JOPLIN_WEBCLIPPER_TOKEN'])
 
@@ -53,7 +55,8 @@ class JongToolKitCollector:
         # the body contains the URL all alone
         body = urlopen(note['body'])
         page = BeautifulSoup(body, 'html.parser')
-        return page.title.string, page.body
+        title = page.title.string if page.title else 'no title found'
+        return title, page.body
 
     def update_notes(self):
         """
