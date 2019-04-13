@@ -1,4 +1,4 @@
-joplin-api==1.2.2
+joplin-api==1.2.3
 beautifulsoup4==4.7.1
 pypandoc==1.4
 
