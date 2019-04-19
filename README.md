@@ -9,7 +9,7 @@ Import of notes into joplin from your cloud service
 ### prerequisite
 
 * Python 3.6 or +
-* [joplin terminal](https://joplin.cozic.net/terminal/) installed
+* [joplin terminal](https://joplinapp.org/terminal/) installed
 * joplin-api - to request joplin
 * beautifulsoup - to get the html page
 * pypandoc - to translate the html page to markdown
