@@ -51,12 +51,16 @@ joplin_import_folder = /home/foxmask/Dropbox/Applications/Joplin/letterbox/
 JOPLIN_DEFAULT_FOLDER = Home
 ```
 
+## Importer
+
+script to load JEX or MD files into joplin
+
 ### running
 
 you can set a crontab or a "at" service to trigger the command at the given time you want
 
 ```python
-python jong_toolkit/importer.py 
+python jong_toolkit/core.py --importer 
 ```
 
 
@@ -81,7 +85,7 @@ PYPANDOC_MARKDOWN = markdown_github
 you can set a crontab or a "at" service to trigger the command at the given time you want
 
 ```python
-python jong_toolkit/collector.py 
+python jong_toolkit/core.py --collector
 ```
 
 the note with the shared link

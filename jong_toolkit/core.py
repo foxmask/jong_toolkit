@@ -1,7 +1,11 @@
 # coding: utf-8
 # python lib
+import argparse
+import asyncio
 import configparser
 import itertools
+import logging
+from logging import getLogger
 import os
 from pathlib import Path
 import shlex
@@ -13,6 +17,7 @@ from joplin_api import JoplinApi
 from bs4 import BeautifulSoup
 import pypandoc
 
+
 current_folder = os.path.dirname(__file__)
 config = configparser.ConfigParser()
 config.read(os.path.join(current_folder, 'settings.ini'))
@@ -21,70 +26,42 @@ if not config['JOPLIN_CONFIG']['JOPLIN_WEBCLIPPER_TOKEN']:
 
 joplin = JoplinApi(token=config['JOPLIN_CONFIG']['JOPLIN_WEBCLIPPER_TOKEN'])
 
+logging.basicConfig(filename='jong_toolkit.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = getLogger("joplin_api.api")
 
-class JongToolKitCollector:
+
+def grab_note( note):
     """
-        JongToolKitCollector:
-        =====================
-
-        Use it to collect shared notes, on your mobile, that just contain an URL as content
-        then this will create a note for you from that URL
-
-        example:
-
-        >>> from jong_toolkit.jong_toolkit import JongToolKitCollector
-        >>> jtkc = JongToolKitCollector()
-        >>> jtkc.update_notes()
+    grab the webpage of that note
+    :note :dict: dict of the shared note
+    :return title of the grabed page and its body
     """
-
-    def get_tags_notes(self, tag):
-        """
-        get the note with the given tag
-
-        :tag :string: the tag that will allow to find note with that tag
-        :return json
-        """
-        return joplin.get_tags_notes(tag)
-
-    def grab_note(self, note):
-        """
-        grab the webpage of that note
-        :note :dict: dict of the shared note
-        :return title of the grabed page and its body
-        """
-        # the body contains the URL all alone
-        body = urlopen(note['body'])
-        page = BeautifulSoup(body, 'html.parser')
-        title = page.title.string if page.title else 'no title found'
-        return title, page.body
-
-    def update_notes(self):
-        """
-        create notes related to a given tag
-        """
-        joplin_tag = config['JOPLIN_CONFIG']['JOPLIN_DEFAULT_TAG']
-        tags = joplin.get_tags().json()
-        for tag in tags:
-            if tag['title'] == joplin_tag.lower():
-                for note in self.get_tags_notes(tag['id']).json():
-                    title, body = self.grab_note(note)
-                    params = {'source_url': note['body']}
-                    content = pypandoc.convert_text(body.decode(), config['JOPLIN_CONFIG']['PYPANDOC_MARKDOWN'], format='html')
-                    joplin.create_note(title, content, note['parent_id'], **params)
+    # the body contains the URL all alone
+    body = urlopen(note['title'])
+    page = BeautifulSoup(body, 'html.parser')
+    title = page.title.string if page.title else 'no title found'
+    return title, page.body
 
 
-def importer():
+async def collector():
     """
-    read the folder of the file to import
+    create notes related to a given tag
     """
-    jtki = JongToolKitImporter()
-    md_files = Path(config['JOPLIN_CONFIG']['JOPLIN_IMPORT_FOLDER']).glob('*.md')
-    jex_files = Path(config['JOPLIN_CONFIG']['JOPLIN_IMPORT_FOLDER']).glob('*.jex')
-    # concatenate the 2 generators
-    files = itertools.chain(md_files, jex_files)
-    # read the files to import
-    for file in files:
-        jtki.import_note(file)
+    joplin_tag = config['JOPLIN_CONFIG']['JOPLIN_DEFAULT_TAG']
+    tags = await joplin.get_tags()
+    for tag in tags.json():
+        logger.info(f'tag {tag}')
+        print(f"tag {tag}")
+        if tag['title'] == joplin_tag.lower():
+            tags_notes = await joplin.get_tags_notes(tag['id'])
+            for note in tags_notes.json():
+                logger.info(f'note {note}')
+                print(note)
+                title, body = grab_note(note)
+                params = {'source_url': note['body']}
+                content = pypandoc.convert_text(body.decode(), config['JOPLIN_CONFIG']['PYPANDOC_MARKDOWN'],
+                                                format='html')
+                await joplin.create_note(title, content, note['parent_id'], **params)
 
 
 class JongToolKitImporter:
@@ -96,7 +73,7 @@ class JongToolKitImporter:
 
         example:
 
-        >>> from jong_toolkit.jong_toolkit import JongToolKitImporter
+        >>> from jong_toolkit import JongToolKitImporter
         >>> file = '/somewhere/Dropbox/Applications/Joplin/letterbox/foorbar.md'
         >>> jtki = JongToolKitImporter()
         >>> jtki.import_note(file)
@@ -138,9 +115,32 @@ class JongToolKitImporter:
         self._joplin_run(file)
 
 
-def collector():
+def importer():
     """
     read the folder of the file to import
     """
-    jtkc = JongToolKitCollector()
-    jtkc.update_notes()
+    jtki = JongToolKitImporter()
+    md_files = Path(config['JOPLIN_CONFIG']['JOPLIN_IMPORT_FOLDER']).glob('*.md')
+    jex_files = Path(config['JOPLIN_CONFIG']['JOPLIN_IMPORT_FOLDER']).glob('*.jex')
+    # concatenate the 2 generators
+    files = itertools.chain(md_files, jex_files)
+    # read the files to import
+    for file in files:
+        jtki.import_note(file)
+
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(prog="jong_toolkit/core.py", description='jong toolkit')
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('--collector', action='store_true')
+    group.add_argument('--importer', action='store_true')
+    args = parser.parse_args()
+    if args.collector:
+        loop = asyncio.get_event_loop()
+        try:
+            loop.run_until_complete(collector())
+        finally:
+            loop.close()
+    else:
+        importer()
