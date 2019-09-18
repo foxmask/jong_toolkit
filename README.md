@@ -33,8 +33,6 @@ cd jong_toolkit
 cp settings.sample settings.ini
 ```
 
-set the value of JOPLIN_WEBCLIPPER_TOKEN 
-
 ### settings 
 
 in `the jong_toolkit/settings.ini` file set the following properties
@@ -49,6 +47,9 @@ JOPLIN_PROFILE_PATH = /home/foxmask/.config/joplin-desktop
 joplin_import_folder = /home/foxmask/Dropbox/Applications/Joplin/letterbox/
 # default folder where to import notes
 JOPLIN_DEFAULT_FOLDER = Home
+JOPLIN_WEBCLIPPER = 41148
+JOPLIN_WEBCLIPPER_TOKEN = <put the token from the webclipper config page>
+PYPANDOC_MARKDOWN = markdown_github
 ```
 
 ## Importer
@@ -75,9 +76,6 @@ in the `settings.ini` file, set the `tag` that will be used for checking if note
 
 ```
 JOPLIN_DEFAULT_TAG = grab
-JOPLIN_WEBCLIPPER = 41148
-JOPLIN_WEBCLIPPER_TOKEN = <put the token from the webclipper config page>
-PYPANDOC_MARKDOWN = markdown_github
 ```
 
 ### running
