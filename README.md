@@ -28,6 +28,7 @@ source bin/activate
 
 ```python
 git clone https://github.com/foxmask/jong_toolkit
+cd jong_toolkit
 pip install -r requirements.txt
 cd jong_toolkit
 cp settings.sample settings.ini
