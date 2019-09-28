@@ -5,6 +5,7 @@ import json
 from joplin_api import JoplinApi
 from jong_toolkit.core import JongToolKitCollector, JongToolKitImporter
 
+
 class TestStringMethods(unittest.TestCase):
 
     def setUp(self):
@@ -31,6 +32,7 @@ class TestStringMethods(unittest.TestCase):
         self.assertTrue(type(self.config['JOPLIN_CONFIG']['JOPLIN_WEBCLIPPER']) is str)
         self.assertTrue(type(self.config['JOPLIN_CONFIG']['JOPLIN_WEBCLIPPER_TOKEN']) is str)
         self.assertTrue(type(self.config['JOPLIN_CONFIG']['JOPLIN_BIN_PATH']) is str)
+
 
 if __name__ == '__main__':
     unittest.main()

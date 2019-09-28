@@ -26,11 +26,13 @@ if not config['JOPLIN_CONFIG']['JOPLIN_WEBCLIPPER_TOKEN']:
 
 joplin = JoplinApi(token=config['JOPLIN_CONFIG']['JOPLIN_WEBCLIPPER_TOKEN'])
 
-logging.basicConfig(filename='jong_toolkit.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='jong_toolkit.log',
+                    level=logging.DEBUG,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 logger = getLogger("joplin_api.api")
 
 
-def grab_note( note):
+def grab_note(note):
     """
     grab the webpage of that note
     :note :dict: dict of the shared note

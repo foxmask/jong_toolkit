@@ -53,7 +53,15 @@ JOPLIN_DEFAULT_FOLDER = Home
 
 ## Importer
 
-script to load JEX or MD files into joplin
+before running anything, check you started the joplin headless server, if not start it as follow
+
+```
+joplin --path /home/foxmask/.config/joplin-desktop server start
+```
+
+or start your joplin desktop version
+
+then script to load JEX or MD files into joplin
 
 ### running
 
