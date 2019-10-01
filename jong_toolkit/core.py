@@ -39,7 +39,7 @@ def grab_note(note):
     :return title of the grabed page and its body
     """
     # the body contains the URL all alone
-    body = urlopen(note['title'])
+    body = urlopen(note['body'].strip())
     page = BeautifulSoup(body, 'html.parser')
     title = page.title.string if page.title else 'no title found'
     return title, page.body
@@ -50,20 +50,23 @@ async def collector():
     create notes related to a given tag
     """
     joplin_tag = config['JOPLIN_CONFIG']['JOPLIN_DEFAULT_TAG']
+    joplin_new_tag = config['JOPLIN_CONFIG']['JOPLIN_NEW_TAG']
     tags = await joplin.get_tags()
     for tag in tags.json():
-        logger.info(f'tag {tag}')
-        print(f"tag {tag}")
         if tag['title'] == joplin_tag.lower():
+            logger.info(f'tag {tag}')
             tags_notes = await joplin.get_tags_notes(tag['id'])
             for note in tags_notes.json():
                 logger.info(f'note {note}')
-                print(note)
                 title, body = grab_note(note)
                 params = {'source_url': note['body']}
+                if joplin_new_tag:
+                    params['tags'] = joplin_new_tag
                 content = pypandoc.convert_text(body.decode(), config['JOPLIN_CONFIG']['PYPANDOC_MARKDOWN'],
                                                 format='html')
-                await joplin.create_note(title, content, note['parent_id'], **params)
+                res = await joplin.create_note(title, content, note['parent_id'], **params)
+                if res.status_code == 200:
+                    await joplin.delete_note(note['id'])
 
 
 class JongToolKitImporter:

@@ -1,9 +1,6 @@
 import configparser
 import os
 import unittest
-import json
-from joplin_api import JoplinApi
-from jong_toolkit.core import JongToolKitCollector, JongToolKitImporter
 
 
 class TestStringMethods(unittest.TestCase):
@@ -16,6 +13,7 @@ class TestStringMethods(unittest.TestCase):
     def test_config(self):
         self.assertTrue('JOPLIN_CONFIG' in self.config)
         self.assertTrue('JOPLIN_DEFAULT_TAG' in self.config['JOPLIN_CONFIG'])
+        self.assertTrue('JOPLIN_NEW_TAG' in self.config['JOPLIN_CONFIG'])
         self.assertTrue('PYPANDOC_MARKDOWN' in self.config['JOPLIN_CONFIG'])
         self.assertTrue('JOPLIN_IMPORT_FOLDER' in self.config['JOPLIN_CONFIG'])
         self.assertTrue('JOPLIN_PROFILE_PATH' in self.config['JOPLIN_CONFIG'])
