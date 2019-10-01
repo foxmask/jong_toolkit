@@ -28,29 +28,28 @@ source bin/activate
 
 ```python
 git clone https://github.com/foxmask/jong_toolkit
-cd jong_toolkit
 pip install -r requirements.txt
 cd jong_toolkit
 cp settings.sample settings.ini
 ```
 
+set the value of JOPLIN_WEBCLIPPER_TOKEN 
+
 ### settings 
 
 in `the jong_toolkit/settings.ini` file set the following properties
  
-```python 
+```ini 
 [JOPLIN_CONFIG]
 # path to the joplin terminal version
 JOPLIN_BIN_PATH = /home/foxmask/.joplin-bin/bin/joplin
 # path to the profile of the joplin client (terminal/desktop)
 JOPLIN_PROFILE_PATH = /home/foxmask/.config/joplin-desktop
 # path to the folder of the cloud storage service
-joplin_import_folder = /home/foxmask/Dropbox/Applications/Joplin/letterbox/
+JOPLIN_IMPORT_FOLDER = /home/foxmask/Dropbox/Applications/Joplin/letterbox/
 # default folder where to import notes
-JOPLIN_DEFAULT_FOLDER = Home
-JOPLIN_WEBCLIPPER = 41148
-JOPLIN_WEBCLIPPER_TOKEN = <put the token from the webclipper config page>
-PYPANDOC_MARKDOWN = markdown_github
+JOPLIN_DEFAULT_FOLDER = Todo
+
 ```
 
 ## Importer
@@ -83,8 +82,17 @@ This situation occurs when you "share" page link from your phone to Joplin, as j
 ### settings 
 in the `settings.ini` file, set the `tag` that will be used for checking if notes need to be generated
 
-```
+```ini
+# default tag to look at to grab the URL of the note to generate
 JOPLIN_DEFAULT_TAG = grab
+# tag assigned to the note once generated, if none, no tag assigned
+JOPLIN_NEW_TAG = 
+# URL port to reach JOPLIN
+JOPLIN_WEBCLIPPER = 41184
+# TOKEN to get data from joplin api
+JOPLIN_WEBCLIPPER_TOKEN = <your token found in the webclippeer settings page>
+# markdown
+PYPANDOC_MARKDOWN = markdown_github
 ```
 
 ### running
