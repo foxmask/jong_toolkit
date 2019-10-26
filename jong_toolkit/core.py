@@ -29,7 +29,7 @@ joplin = JoplinApi(token=config['JOPLIN_CONFIG']['JOPLIN_WEBCLIPPER_TOKEN'])
 logging.basicConfig(filename='jong_toolkit.log',
                     level=logging.DEBUG,
                     format='%(asctime)s - %(levelname)s - %(message)s')
-logger = getLogger("joplin_api.api")
+logger = getLogger(__name__)
 
 
 def grab_note(note):
@@ -135,7 +135,7 @@ def importer():
 
 
 if __name__ == '__main__':
-
+    print('Jong Toolkit started!')
     parser = argparse.ArgumentParser(prog="jong_toolkit/core.py", description='jong toolkit')
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('--collector', action='store_true')

@@ -15,3 +15,8 @@ JOPLIN_WEBCLIPPER = 41184
 JOPLIN_WEBCLIPPER_TOKEN = 
 # markdown
 PYPANDOC_MARKDOWN = markdown_github
+
+[MAIL]
+EMAIL_SERVER=localhost
+EMAIL_FROM=root
+EMAIL_TO=foxmask
