@@ -110,3 +110,27 @@ the note with the shared link
 once the script has run
 
 ![after](after.png)
+
+
+## Mailer
+
+script to send a mail for each note that has been due
+
+### settings 
+in the `settings.ini` set those properties
+
+```ini
+[MAIL]
+EMAIL_SERVER=localhost
+EMAIL_FROM=root
+EMAIL_TO=foxmask
+```
+
+### running
+
+launch and forget ;) it will send a mail once it will found a new note where date is due
+
+
+```python
+python jong_toolkit/mailer.py
+```
