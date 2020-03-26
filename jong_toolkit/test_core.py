@@ -18,7 +18,8 @@ class TestStringMethods(unittest.TestCase):
         self.assertTrue('JOPLIN_IMPORT_FOLDER' in self.config['JOPLIN_CONFIG'])
         self.assertTrue('JOPLIN_PROFILE_PATH' in self.config['JOPLIN_CONFIG'])
         self.assertTrue('JOPLIN_DEFAULT_FOLDER' in self.config['JOPLIN_CONFIG'])
-        self.assertTrue('JOPLIN_WEBCLIPPER' in self.config['JOPLIN_CONFIG'])
+        self.assertTrue('JOPLIN_URL' in self.config['JOPLIN_CONFIG'])
+        self.assertTrue('JOPLIN_PORT' in self.config['JOPLIN_CONFIG'])
         self.assertTrue('JOPLIN_WEBCLIPPER_TOKEN' in self.config['JOPLIN_CONFIG'])
         self.assertTrue('JOPLIN_BIN_PATH' in self.config['JOPLIN_CONFIG'])
 
@@ -27,7 +28,6 @@ class TestStringMethods(unittest.TestCase):
         self.assertTrue(type(self.config['JOPLIN_CONFIG']['JOPLIN_IMPORT_FOLDER']) is str)
         self.assertTrue(type(self.config['JOPLIN_CONFIG']['JOPLIN_PROFILE_PATH']) is str)
         self.assertTrue(type(self.config['JOPLIN_CONFIG']['JOPLIN_DEFAULT_FOLDER']) is str)
-        self.assertTrue(type(self.config['JOPLIN_CONFIG']['JOPLIN_WEBCLIPPER']) is str)
         self.assertTrue(type(self.config['JOPLIN_CONFIG']['JOPLIN_WEBCLIPPER_TOKEN']) is str)
         self.assertTrue(type(self.config['JOPLIN_CONFIG']['JOPLIN_BIN_PATH']) is str)
 

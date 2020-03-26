@@ -10,7 +10,9 @@ import os
 from pathlib import Path
 import shlex
 import subprocess
+import sys
 from urllib.request import urlopen
+import urllib
 
 # external lib
 from joplin_api import JoplinApi
@@ -32,6 +34,24 @@ logging.basicConfig(filename='jong_toolkit.log',
 logger = getLogger(__name__)
 
 
+async def check_service():
+    """
+    check if the service is up before trying to use it
+    :return:
+    """
+    url = '{}:{}/ping'.format(config['JOPLIN_CONFIG']['JOPLIN_URL'], config['JOPLIN_CONFIG']['JOPLIN_PORT'])
+    try:
+        res = urlopen(url)
+        if res.readline() == b'JoplinClipperServer':
+            return True
+        return False
+    except urllib.error.URLError as e:
+        print("Connection failed to {}. Check if joplin is started".format(url))
+        print(e)
+        print('Jong Toolkit aborted!')
+        sys.exit(1)
+
+
 def grab_note(note):
     """
     grab the webpage of that note
@@ -49,6 +69,8 @@ async def collector():
     """
     create notes related to a given tag
     """
+    if await check_service() is False:
+        raise ConnectionError("Joplin service is not started")
     joplin_tag = config['JOPLIN_CONFIG']['JOPLIN_DEFAULT_TAG']
     joplin_new_tag = config['JOPLIN_CONFIG']['JOPLIN_NEW_TAG']
     tags = await joplin.get_tags()
@@ -149,3 +171,4 @@ if __name__ == '__main__':
             loop.close()
     else:
         importer()
+    print('Jong Toolkit Finished!')
