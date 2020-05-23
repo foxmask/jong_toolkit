@@ -22,6 +22,8 @@ JOPLIN_URL = http://localhost
 # JOPLIN SERVIC EPORT 
 JOPLIN_PORT = 41184
 
+LOG_LEVEL = INFO
+
 
 [MAIL]
 EMAIL_SERVER=localhost

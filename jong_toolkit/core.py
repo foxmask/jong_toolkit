@@ -28,7 +28,7 @@ if not config['JOPLIN_CONFIG']['JOPLIN_WEBCLIPPER_TOKEN']:
 joplin = JoplinApi(token=config['JOPLIN_CONFIG']['JOPLIN_WEBCLIPPER_TOKEN'])
 
 logging.basicConfig(filename='jong_toolkit.log',
-                    level=logging.DEBUG,
+                    level=config['JOPLIN_CONFIG']['LOG_LEVEL'],
                     format='%(asctime)s - %(levelname)s - %(message)s')
 logger = getLogger(__name__)
 
@@ -75,16 +75,18 @@ async def collector():
     tags = await joplin.get_tags()
     for tag in tags.json():
         if tag['title'] == joplin_tag.lower():
-            logger.info(f'tag {tag}')
+            logger.debug(f'tag {tag}')
             tags_notes = await joplin.get_tags_notes(tag['id'])
             for note in tags_notes.json():
-                logger.info(f'note {note}')
+                logger.debug(f'note {note}')
                 title, body = grab_note(note)
                 params = {'source_url': note['body']}
                 if joplin_new_tag:
                     params['tags'] = joplin_new_tag
-                content = pypandoc.convert_text(body.decode(), config['JOPLIN_CONFIG']['PYPANDOC_MARKDOWN'],
+                content = pypandoc.convert_text(body.decode(),
+                                                config['JOPLIN_CONFIG']['PYPANDOC_MARKDOWN'],
                                                 format='html')
+                logger.info(f"new note {title}")
                 res = await joplin.create_note(title, content, note['parent_id'], **params)
                 if res.status_code == 200:
                     await joplin.delete_note(note['id'])
