@@ -9,12 +9,19 @@ JOPLIN_IMPORT_FOLDER = /home/foxmask/Dropbox/Applications/Joplin/letterbox/
 JOPLIN_DEFAULT_FOLDER = Todo
 # default tag to look at to grab the URL of the note to generate
 JOPLIN_DEFAULT_TAG = grab
+# tag to migrate to once grab has been used
+JOPLIN_NEW_TAG = 
 # URL port to reach JOPLIN
 JOPLIN_WEBCLIPPER = 41184
 # TOKEN to get data from joplin api
-JOPLIN_WEBCLIPPER_TOKEN = 
+JOPLIN_WEBCLIPPER_TOKEN = fff6170db0bbb65ff563fc5977d533a0b4a60ce3203b8c6252f500fbf9e37211a056dcc8f7cf6239e8745a90bd62da0ff328fcc6e8162552139e382301520ca8
 # markdown
 PYPANDOC_MARKDOWN = markdown_github
+# JOPLIN SERVICE URL
+JOPLIN_URL = http://localhost
+# JOPLIN SERVIC EPORT 
+JOPLIN_PORT = 41184
+
 
 [MAIL]
 EMAIL_SERVER=localhost

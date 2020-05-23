@@ -11,8 +11,7 @@ from pathlib import Path
 import shlex
 import subprocess
 import sys
-from urllib.request import urlopen
-import urllib
+import httpx
 
 # external lib
 from joplin_api import JoplinApi
@@ -41,11 +40,11 @@ async def check_service():
     """
     url = '{}:{}/ping'.format(config['JOPLIN_CONFIG']['JOPLIN_URL'], config['JOPLIN_CONFIG']['JOPLIN_PORT'])
     try:
-        res = urlopen(url)
-        if res.readline() == b'JoplinClipperServer':
+        res = httpx.get(url)
+        if res.text == 'JoplinClipperServer':
             return True
         return False
-    except urllib.error.URLError as e:
+    except httpx.HTTPError as e:
         print("Connection failed to {}. Check if joplin is started".format(url))
         print(e)
         print('Jong Toolkit aborted!')
@@ -59,8 +58,8 @@ def grab_note(note):
     :return title of the grabed page and its body
     """
     # the body contains the URL all alone
-    body = urlopen(note['body'].strip())
-    page = BeautifulSoup(body, 'html.parser')
+    body = httpx.get(note['body'].strip())
+    page = BeautifulSoup(body.text, 'html.parser')
     title = page.title.string if page.title else 'no title found'
     return title, page.body
 
